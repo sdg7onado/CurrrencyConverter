@@ -13,8 +13,6 @@ import com.paypay.converter.ApplicationExtender
 import com.paypay.converter.ApplicationExtender.Companion.MY_SOCKET_TIMEOUT_MS
 import com.paypay.converter.BuildConfig
 import java.io.Serializable
-import java.util.*
-import kotlin.collections.HashMap
 
 @Entity(tableName = "tb_currencies", indices = [Index(value = ["symbol"], unique = true)])
 class Currency : Serializable, Comparable<Currency?> {

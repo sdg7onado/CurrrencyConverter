@@ -2,9 +2,9 @@ package com.paypay.converter
 
 import android.app.Activity
 import android.content.Context
-import android.content.SharedPreferences
 import android.content.pm.ActivityInfo
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.multidex.MultiDex
 import androidx.multidex.MultiDexApplication
 import com.android.volley.Request
@@ -29,9 +29,18 @@ class ApplicationExtender : MultiDexApplication {
     }
 
     /**
+     * Sets current activity.
+     *
+     * @param controlActivity the control activity
+     */
+    fun setCurrentActivity(controlActivity: AppCompatActivity?) {
+        currentActivity = controlActivity as ControlActivity?
+    }
+
+    /**
      * FOR THE MULTIDEX
      */
-    protected override fun attachBaseContext(base: Context?) {
+    override fun attachBaseContext(base: Context) {
         super.attachBaseContext(base)
         MultiDex.install(this)
     }
@@ -50,31 +59,13 @@ class ApplicationExtender : MultiDexApplication {
                 activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
             }
 
-            override fun onActivityStarted(activity: Activity) {
-                TODO("Not yet implemented")
-            }
-
-            override fun onActivityResumed(activity: Activity) {
-                TODO("Not yet implemented")
-            }
-
-            override fun onActivityPaused(activity: Activity) {
-                TODO("Not yet implemented")
-            }
-
-            override fun onActivityStopped(activity: Activity) {
-                TODO("Not yet implemented")
-            }
-
-            override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {
-                TODO("Not yet implemented")
-            }
-
-            override fun onActivityDestroyed(activity: Activity) {
-                TODO("Not yet implemented")
-            }
+            override fun onActivityStarted(activity: Activity) {}
+            override fun onActivityResumed(activity: Activity) {}
+            override fun onActivityPaused(activity: Activity) {}
+            override fun onActivityStopped(activity: Activity) {}
+            override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {}
+            override fun onActivityDestroyed(activity: Activity) {}
         })
-
         app = this
     }
 
@@ -86,8 +77,7 @@ class ApplicationExtender : MultiDexApplication {
      */
     ////
     fun saveToSharedPreferences(key: String?, value: String?) {
-        val sharedPreferences: SharedPreferences =
-            getSharedPreferences(getString(R.string.app_name), MODE_PRIVATE)
+        val sharedPreferences = getSharedPreferences(getString(R.string.app_name), MODE_PRIVATE)
         val editor = sharedPreferences.edit()
         editor.putString(key, value)
         editor.apply()
@@ -100,8 +90,7 @@ class ApplicationExtender : MultiDexApplication {
      * @return the string
      */
     fun readFromSharedPreferences(key: String?): String? {
-        val sharedPreferences: SharedPreferences =
-            getSharedPreferences(getString(R.string.app_name), MODE_PRIVATE)
+        val sharedPreferences = getSharedPreferences(getString(R.string.app_name), MODE_PRIVATE)
         val editor = sharedPreferences.edit()
         return sharedPreferences.getString(key, "")
     }
@@ -111,12 +100,12 @@ class ApplicationExtender : MultiDexApplication {
      *
      * @return the request queue
      */
-    val requestQueue: RequestQueue?
+    val requestQueue: RequestQueue
         get() {
             if (mRequestQueue == null) {
                 mRequestQueue = Volley.newRequestQueue(mCtx!!.applicationContext)
             }
-            return mRequestQueue
+            return mRequestQueue!!
         }
 
     /**
@@ -126,7 +115,7 @@ class ApplicationExtender : MultiDexApplication {
      * @param request the request
     </T> */
     fun <T> addToRequestQueue(request: Request<T>) {
-        requestQueue!!.add(request)
+        requestQueue.add(request)
     }
 
     companion object {
@@ -150,6 +139,13 @@ class ApplicationExtender : MultiDexApplication {
         var app: ApplicationExtender? = null
         private var mCtx: Context? = null
 
+        /**
+         * Get current activity control activity.
+         *
+         * @return the control activity
+         */
+        var currentActivity: ControlActivity? = null
+            private set
 
         /**
          * Gets instance.
