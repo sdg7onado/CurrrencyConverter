@@ -1,0 +1,42 @@
+<!--
+  ~ Copyright (c) 2021. Zenith Bank Plc.
+  -->
+
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+
+    <dimen name="fourdp">4dp</dimen>
+    <dimen name="twodp">2dp</dimen>
+    <dimen name="sixdp">6dp</dimen>
+    <dimen name="eightdp">8dp</dimen>
+    <dimen name="twelvedp">12dp</dimen>
+    <dimen name="sixteendp">16dp</dimen>
+    <dimen name="twentyfourdp">24dp</dimen>
+    <dimen name="thirtytwodp">32dp</dimen>
+    <dimen name="fortyeightdp">48dp</dimen>
+    <dimen name="sixtyfourdp">64dp</dimen>
+    <dimen name="onetwoeightdp">128dp</dimen>
+
+    <dimen name="foursp">4sp</dimen>
+    <dimen name="eightsp">8sp</dimen>
+    <dimen name="twelvesp">12sp</dimen>
+    <dimen name="fourtensp">14sp</dimen>
+    <dimen name="sixteensp">16sp</dimen>
+    <dimen name="eighteensp">18sp</dimen>
+    <dimen name="twentyfoursp">24sp</dimen>
+    <dimen name="dashboarddispsize">24sp</dimen>
+    <dimen name="thirtysp">30sp</dimen>
+    <dimen name="thirtytwosp">32sp</dimen>
+    <dimen name="fortyeightsp">48sp</dimen>
+    <dimen name="sixtyfoursp">64sp</dimen>
+
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+
+
+    <dimen name="subtitle">12sp</dimen>
+    <dimen name="toolbar_title">18sp</dimen>
+
+</resources>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/black"
+    android:clickable="true"
+    android:focusable="true"
+    android:longClickable="false"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:id="@+id/lyt_serial_holder"
+        android:layout_width="@dimen/thirtytwodp"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/lyt_data_holder"
+        android:layout_alignBottom="@id/lyt_data_holder"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/cell_currencySymbol"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/os_bold"
+            android:textAlignment="center"
+            android:textColor="@color/whitebg"
+            android:textSize="@dimen/sixteensp"
+            android:text="USD"
+            />
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/lyt_divider"
+        android:layout_width="0.1dp"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/lyt_data_holder"
+        android:layout_alignBottom="@id/lyt_data_holder"
+        android:layout_marginTop="@dimen/sixteendp"
+        android:layout_marginBottom="@dimen/sixteendp"
+        android:layout_toRightOf="@id/lyt_serial_holder"
+        android:background="@color/white_20">
+
+    </View>
+
+    <RelativeLayout
+        android:id="@+id/lyt_data_holder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/lyt_divider"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/cell_currencyRateValue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/sixteendp"
+            android:fontFamily="@font/os_bold"
+            android:paddingLeft="@dimen/sixteendp"
+            android:paddingRight="@dimen/sixteendp"
+            android:text="100.00"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/whitebg"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/cell_currencyName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/cell_currencyRateValue"
+            android:layout_marginTop="@dimen/eightdp"
+            android:layout_marginBottom="@dimen/sixteendp"
+            android:fontFamily="@font/os_bold"
+            android:paddingLeft="@dimen/sixteendp"
+            android:paddingRight="@dimen/sixteendp"
+            android:text="United States Dollar - USD"
+            android:textAllCaps="true"
+            android:textColor="@color/light_blue"
+            android:textSize="18sp" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

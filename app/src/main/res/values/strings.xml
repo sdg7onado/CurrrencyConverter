@@ -1,0 +1,31 @@
+<!--
+  ~ Copyright (c) 2021. Zenith Bank Plc.
+  -->
+
+<resources>
+
+
+    <!--App Strings-->
+    <string name="app_name">Currency Converter</string>
+    <string name="app_title">Currency Converter</string>
+    <string name="app_title_symbolic">Currency \u2022 Converter</string>
+    <string name="domain">paypay.com</string>
+
+    <string name="ok">Ok</string>
+    <string name="cancel">Cancel</string>
+
+    <string name="action_search">SEARCH</string>
+    <string name="bullet">\u25CF</string>
+
+    <!--Notifications-->
+    <string name="notification_title">title</string>
+    <string name="notification_message">body</string>
+    <string name="default_notification_channel_name">Paypay</string>
+
+    <string name="sync_dialog_title">Select an option</string>
+    <string name="sync_push_payments">Push Payments</string>
+    <string name="sync_update_benefs">Update Beneficiaries</string>
+    <string name="sync_update_payments">Update Payments</string>
+    <string name="sync_close">Close</string>
+
+</resources>

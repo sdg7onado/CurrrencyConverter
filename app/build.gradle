@@ -1,0 +1,131 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+}
+
+def apikeyPropertiesFile = rootProject.file("apikey.properties")
+def apikeyProperties = new Properties()
+apikeyProperties.load(new FileInputStream(apikeyPropertiesFile))
+
+def keystorePropertiesFile = rootProject.file("keystore.properties")
+def keystoreProperties = new Properties()
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
+android {
+
+    compileSdk 31
+
+    signingConfigs {
+        ConverterKeyStore {
+
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+            storeFile file(keystoreProperties['storeFile'])
+            storePassword keystoreProperties['storePassword']
+
+        }
+    }
+
+    defaultConfig {
+        applicationId "com.paypay.converter"
+        minSdk 26
+        targetSdk 31
+        versionCode 100
+        versionName "1.0.0"
+
+        //
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        // should correspond to key/value pairs inside the file
+        buildConfigField("String", "CURRENCYLAYER_URL", apikeyProperties['CURRENCYLAYER_URL'])
+        buildConfigField("String", "CURRENCYLAYER_API_KEY", apikeyProperties['CURRENCYLAYER_API_KEY'])
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+
+            debuggable = false
+
+            signingConfig signingConfigs.ConverterKeyStore
+            android.applicationVariants.all { variant ->
+                variant.outputs.all {
+                    def appName = "CurrencyConverter"
+                    outputFileName = appName + "-Release-${variant.versionName}.apk"
+                }
+            }
+        }
+    }
+
+    lintOptions {
+        checkReleaseBuilds false
+        // Or, if you prefer, you can continue to check for errors in release builds,
+        // but continue the build even when errors are found:
+        abortOnError false
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = '11'
+    }
+
+    dependenciesInfo {
+        includeInApk true
+        includeInBundle true
+    }
+
+    compileSdkVersion 31
+    buildToolsVersion '31.0.0'
+    ndkVersion '23.1.7779620'
+}
+
+dependencies {
+
+    implementation "androidx.core:core-ktx:1.7.0"
+    implementation "androidx.appcompat:appcompat:$rootProject.appCompatVersion"
+
+    implementation "com.google.android.material:material:$rootProject.materialVersion"
+    implementation "androidx.constraintlayout:constraintlayout:$rootProject.constraintLayoutVersion"
+    implementation "androidx.recyclerview:recyclerview:$rootProject.recyclerViewVersion"
+
+    // Lifecycle components
+    implementation "android.arch.lifecycle:extensions:$rootProject.lifecycleExtensionsVersion"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$rootProject.lifecycleVersion"
+    implementation "androidx.lifecycle:lifecycle-common-java8:$rootProject.lifecycleVersion"
+
+
+    // Room components
+    implementation "androidx.room:room-runtime:$rootProject.roomVersion"
+    annotationProcessor "androidx.room:room-compiler:$rootProject.roomVersion"
+    implementation "androidx.room:room-rxjava2:$rootProject.roomVersion"
+    androidTestImplementation "androidx.room:room-testing:$rootProject.roomVersion"
+
+    //GSON
+    implementation "com.google.code.gson:gson:$rootProject.gsonVersion"
+
+    //Multidex
+    implementation "androidx.multidex:multidex:$rootProject.multiDexVersion"
+
+    implementation "io.grpc:grpc-okhttp:$rootProject.okhttpVersion"
+
+    //volley
+    implementation "com.android.volley:volley:$rootProject.volleyVersion"
+
+    //
+    implementation "com.squareup.retrofit2:retrofit:$rootProject.retrofitVersion"
+    implementation "com.squareup.retrofit2:converter-gson:$rootProject.converterGsonVersion"
+
+
+    // Testing
+    testImplementation "junit:junit:$rootProject.junitVersion"
+    androidTestImplementation "androidx.arch.core:core-testing:$rootProject.coreTestingVersion"
+    androidTestImplementation("androidx.test.espresso:espresso-core:$rootProject.espressoVersion", {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+}
