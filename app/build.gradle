@@ -1,6 +1,11 @@
+//apply plugin: 'kotlin-kapt'
+
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'com.google.gms.google-services'
+    id 'com.google.firebase.crashlytics'
 }
 
 def apikeyPropertiesFile = rootProject.file("apikey.properties")
@@ -37,8 +42,17 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         // should correspond to key/value pairs inside the file
-        buildConfigField("String", "CURRENCYLAYER_URL", apikeyProperties['CURRENCYLAYER_URL'])
+        buildConfigField("String", "CURRENCYLAYER_BASE_URL", apikeyProperties['CURRENCYLAYER_BASE_URL'])
         buildConfigField("String", "CURRENCYLAYER_API_KEY", apikeyProperties['CURRENCYLAYER_API_KEY'])
+
+        //for the varios endpoints provided by currency layer
+        buildConfigField("String", "CURRENCYLAYER_LIST_ENDPOINT", apikeyProperties['CURRENCYLAYER_LIST_ENDPOINT'])
+        buildConfigField("String", "CURRENCYLAYER_RATES_ENDPOINT", apikeyProperties['CURRENCYLAYER_RATES_ENDPOINT'])
+        buildConfigField("String", "CURRENCYLAYER_CONVERT_ENDPOINT", apikeyProperties['CURRENCYLAYER_CONVERT_ENDPOINT'])
+
+        buildConfigField("String", "DEFAULT_CURRENCY", apikeyProperties['DEFAULT_CURRENCY'])
+        //buildConfigField("Long", "REFRESH_INTERVAL", apikeyProperties['REFRESH_INTERVAL'])
+
     }
 
     buildTypes {
@@ -67,8 +81,8 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
 
     kotlinOptions {
@@ -87,34 +101,70 @@ android {
 
 dependencies {
 
+    //  Core APIs
     implementation "androidx.core:core-ktx:1.7.0"
     implementation "androidx.appcompat:appcompat:$rootProject.appCompatVersion"
+    implementation "androidx.activity:activity-ktx:$rootProject.activityVersion"
 
+    //  Androidx / Material Design APIs
     implementation "com.google.android.material:material:$rootProject.materialVersion"
     implementation "androidx.constraintlayout:constraintlayout:$rootProject.constraintLayoutVersion"
     implementation "androidx.recyclerview:recyclerview:$rootProject.recyclerViewVersion"
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:$rootProject.swipeRefreshLayoutVersion"
 
-    // Lifecycle components
+    //  SPlashScreen API
+    implementation "androidx.core:core-splashscreen:$rootProject.splashScreenVersion"
+
+    //  Lifecycle components
     implementation "android.arch.lifecycle:extensions:$rootProject.lifecycleExtensionsVersion"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$rootProject.lifecycleVersion"
     implementation "androidx.lifecycle:lifecycle-common-java8:$rootProject.lifecycleVersion"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$rootProject.lifecycleVersion"
 
+    //  Firebase
+    //  Import the BoM for the Firebase platform
+    implementation platform("com.google.firebase:firebase-bom:$rootProject.firebaseBOMVersion")
+    implementation "com.google.android.gms:play-services-measurement-api:$rootProject.playServicesMeasurmentVersion"
+    implementation "com.google.firebase:firebase-crashlytics-ktx"
+    implementation "com.google.firebase:firebase-analytics-ktx"
 
-    // Room components
-    implementation "androidx.room:room-runtime:$rootProject.roomVersion"
-    annotationProcessor "androidx.room:room-compiler:$rootProject.roomVersion"
+    //  Coroutines
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:coroutinesVersion")
+
+    //  Room components
+    //  implementation "androidx.room:room-runtime:$rootProject.roomVersion"
+    implementation "androidx.room:room-ktx:$rootProject.roomVersion"
+    //  annotationProcessor "androidx.room:room-compiler:$rootProject.roomVersion"
+    kapt "androidx.room:room-compiler:$rootProject.roomVersion"
+
     implementation "androidx.room:room-rxjava2:$rootProject.roomVersion"
     androidTestImplementation "androidx.room:room-testing:$rootProject.roomVersion"
+
+    //
+    implementation "androidx.fragment:fragment-ktx:$rootProject.fragmentKtxVersion"
+
+    //  WorkManager components
+    implementation "androidx.work:work-runtime:$rootProject.workVersion"
+    implementation "androidx.work:work-runtime-ktx:$rootProject.roomKtxVersion"
+
+    //RxJava2 support
+    implementation "androidx.work:work-rxjava2:$rootProject.workVersion"
+    androidTestImplementation "androidx.work:work-testing:$rootProject.workVersion"
 
     //GSON
     implementation "com.google.code.gson:gson:$rootProject.gsonVersion"
 
-    //Multidex
+    //JACKSON
+    implementation ("com.fasterxml.jackson.module:jackson-module-kotlin:$rootProject.jacksonModuleKotlinVersion") {
+        exclude group: 'org.jetbrains.kotlin', module: 'kotlin-reflect'
+    }
+
+    //  Multidex
     implementation "androidx.multidex:multidex:$rootProject.multiDexVersion"
 
     implementation "io.grpc:grpc-okhttp:$rootProject.okhttpVersion"
 
-    //volley
+    //  Volley
     implementation "com.android.volley:volley:$rootProject.volleyVersion"
 
     //

@@ -28,15 +28,24 @@
         <item name="colorButtonNormal">@color/primary</item>
         <item name="alertDialogTheme">@style/AlertDialog</item>
 
-        <!--        <item name="vpiCirclePageIndicatorStyle">@style/CustomCirclePageIndicator</item>
-        <item name="vpiLinePageIndicatorStyle">@style/CustomLinePageIndicator</item>
-        <item name="vpiTitlePageIndicatorStyle">@style/CustomTitlePageIndicator</item>
-        <item name="vpiUnderlinePageIndicatorStyle">@style/CustomUnderlinePageIndicator</item>-->
-
-
         <item name="android:textViewStyle">@style/TextViewStyle</item>
         <item name="android:buttonStyle">@style/ButtonStyle</item>
         <item name="android:editTextStyle">@style/EditTextStyle</item>
+
+    </style>
+
+    <style name="Theme.App.Starting" parent="Theme.SplashScreen">
+
+        <!--// Set the splash screen background, animated icon, and animation duration.-->
+        <item name="windowSplashScreenBackground">@color/black</item>
+
+        <!--// Use windowSplashScreenAnimatedIcon to add either a drawable or an
+        // animated drawable. One of these is required.-->
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_paypaylogo</item>
+        <item name="windowSplashScreenAnimationDuration">100</item>
+
+        <!--// Set the theme of the Activity that directly follows your splash screen.-->
+        <item name="postSplashScreenTheme">@style/AppTheme.Base</item>
 
     </style>
 

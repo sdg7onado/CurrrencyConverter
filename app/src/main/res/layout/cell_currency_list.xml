@@ -9,45 +9,24 @@
     android:longClickable="false"
     android:orientation="horizontal">
 
-    <LinearLayout
-        android:id="@+id/lyt_serial_holder"
-        android:layout_width="@dimen/thirtytwodp"
+    <TextView
+        android:id="@+id/cell_currencySymbol"
+        android:layout_width="@dimen/fortyeightdp"
         android:layout_height="wrap_content"
+        android:gravity="center"
+
         android:layout_alignTop="@id/lyt_data_holder"
         android:layout_alignBottom="@id/lyt_data_holder"
-        android:gravity="center">
-
-        <TextView
-            android:id="@+id/cell_currencySymbol"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/os_bold"
-            android:textAlignment="center"
-            android:textColor="@color/whitebg"
-            android:textSize="@dimen/sixteensp"
-            android:text="USD"
-            />
-
-    </LinearLayout>
-
-    <View
-        android:id="@+id/lyt_divider"
-        android:layout_width="0.1dp"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@id/lyt_data_holder"
-        android:layout_alignBottom="@id/lyt_data_holder"
-        android:layout_marginTop="@dimen/sixteendp"
-        android:layout_marginBottom="@dimen/sixteendp"
-        android:layout_toRightOf="@id/lyt_serial_holder"
-        android:background="@color/white_20">
-
-    </View>
+        android:fontFamily="@font/os_light"
+        android:textAlignment="center"
+        android:textColor="@color/whitebg"
+        android:textSize="@dimen/sixteensp" />
 
     <RelativeLayout
         android:id="@+id/lyt_data_holder"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/lyt_divider"
+        android:layout_toEndOf="@id/cell_currencySymbol"
         android:orientation="vertical">
 
         <TextView
@@ -58,10 +37,9 @@
             android:fontFamily="@font/os_bold"
             android:paddingLeft="@dimen/sixteendp"
             android:paddingRight="@dimen/sixteendp"
-            android:text="100.00"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/whitebg"
-            android:textSize="18sp" />
+            android:textSize="@dimen/fortysp" />
 
         <TextView
             android:id="@+id/cell_currencyName"
@@ -73,10 +51,8 @@
             android:fontFamily="@font/os_bold"
             android:paddingLeft="@dimen/sixteendp"
             android:paddingRight="@dimen/sixteendp"
-            android:text="United States Dollar - USD"
-            android:textAllCaps="true"
-            android:textColor="@color/light_blue"
-            android:textSize="18sp" />
+            android:textColor="@color/red"
+            android:textSize="@dimen/sixteensp" />
 
     </RelativeLayout>
 

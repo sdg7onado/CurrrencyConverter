@@ -3,15 +3,23 @@ buildscript {
 
     ext {
         appCompatVersion = '1.4.0'
+        activityVersion = '1.4.0'
         constraintLayoutVersion = '2.1.2'
         recyclerViewVersion = '1.2.1'
+        swipeRefreshLayoutVersion = '1.1.0'
         coreTestingVersion = '2.1.0'
         lifecycleVersion = '2.4.0'
         lifecycleExtensionsVersion = '1.1.1'
         materialVersion = '1.4.0'
+        splashScreenVersion = '1.0.0-alpha02'
+        //roomVersion = '2.3.0'
         roomVersion = '2.4.0-rc01'
+        coroutinesVersion = '1.5.0'
+        roomKtxVersion = '2.7.1'
+        fragmentKtxVersion = '1.4.0'
         kotlin_version = '1.6.0'
-        work_version = "2.7.1"
+        workVersion = "2.7.1"
+        paging_version = "3.1.0"
         paging_version = "3.1.0"
 
         // testing
@@ -24,6 +32,13 @@ buildscript {
         volleyVersion = '1.2.1'
         retrofitVersion = '2.9.0'
         converterGsonVersion = '2.9.0'
+        jacksonModuleKotlinVersion = '2.13.0'
+
+        //firebase //google analytics
+        firebaseBOMVersion = '29.0.0'
+        //firebaseCrashlyticsVersion = '18.2.5'
+        //firebaseAnalyticsVersion = '20.0.0'
+        playServicesMeasurmentVersion = '20.0.0'
     }
 
     repositories {
@@ -31,8 +46,10 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath "com.android.tools.build:gradle:7.0.3"
+        classpath 'com.android.tools.build:gradle:7.0.4'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.0"
+        classpath 'com.google.gms:google-services:4.3.10'
+        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.8.1'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "977941722869",
+    "project_id": "ccy-cvtr-001",
+    "storage_bucket": "ccy-cvtr-001.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:977941722869:android:dad3d65323dc5b5f3fb7bc",
+        "android_client_info": {
+          "package_name": "com.paypay.converter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "977941722869-ri3j3350v705flmtscd47qrp5pc716q7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA93RTZzhJs5xJeOAMYuEfnd64meA6No10"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "977941722869-ri3j3350v705flmtscd47qrp5pc716q7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

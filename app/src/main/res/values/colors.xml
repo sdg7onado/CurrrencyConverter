@@ -31,8 +31,10 @@
     <color name="light_blue_alpha">#e63498db</color>
     <color name="white_30">#f2ffffff</color>
     <color name="white_20">#48ffffff</color>
+    <color name="dvdr_seperator">#70ffffff</color>
     <color name="white_40">#a0ffffff</color>
     <color name="translucent_red">#80ff0000</color>
+    <color name="translucent_red2">#CCff0000</color>
     <color name="accent_material_light">#d32f2f</color>
     <color name="accent_material_dark">#d32f2f</color>
 

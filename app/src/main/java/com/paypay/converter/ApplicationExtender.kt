@@ -10,9 +10,26 @@ import androidx.multidex.MultiDexApplication
 import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.Volley
+import com.paypay.converter.database.coredb.AppDatabase
+import com.paypay.converter.database.coredb.ConversionRateRepository
+import com.paypay.converter.database.coredb.CurrencyRepository
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.SupervisorJob
 
 class ApplicationExtender : MultiDexApplication {
+
     private var mRequestQueue: RequestQueue? = null
+
+    // No need to cancel this scope as it'll be torn down with the process
+    val applicationScope = CoroutineScope(SupervisorJob())
+
+    // Using by lazy so the database and the repository are only created when they're needed
+    // rather than when the application starts
+    val database by lazy { AppDatabase.getInstance(applicationContext) }
+
+    val currencyRepository by lazy { CurrencyRepository(database.currencyDao()) }
+
+    val conversionRateRepository by lazy { ConversionRateRepository(database.conversionRateDao()) }
 
     /**
      * Instantiates a new App analytics extender.
@@ -91,7 +108,6 @@ class ApplicationExtender : MultiDexApplication {
      */
     fun readFromSharedPreferences(key: String?): String? {
         val sharedPreferences = getSharedPreferences(getString(R.string.app_name), MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
         return sharedPreferences.getString(key, "")
     }
 

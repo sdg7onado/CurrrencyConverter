@@ -15,6 +15,7 @@
     <dimen name="thirtytwodp">32dp</dimen>
     <dimen name="fortyeightdp">48dp</dimen>
     <dimen name="sixtyfourdp">64dp</dimen>
+    <dimen name="seventytwodp">72dp</dimen>
     <dimen name="onetwoeightdp">128dp</dimen>
 
     <dimen name="foursp">4sp</dimen>
@@ -27,6 +28,7 @@
     <dimen name="dashboarddispsize">24sp</dimen>
     <dimen name="thirtysp">30sp</dimen>
     <dimen name="thirtytwosp">32sp</dimen>
+    <dimen name="fortysp">40sp</dimen>
     <dimen name="fortyeightsp">48sp</dimen>
     <dimen name="sixtyfoursp">64sp</dimen>
 

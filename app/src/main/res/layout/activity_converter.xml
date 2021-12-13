@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingStart="@dimen/sixteendp"
+    android:paddingEnd="@dimen/sixteendp"
+    android:paddingTop="@dimen/twentyfourdp"
+    tools:context=".ConverterActivity"
+    android:background="@color/black">
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/editTextReferenceAmount"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/seventytwodp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:paddingLeft="@dimen/sixteendp"
+        android:paddingRight="@dimen/sixteendp"
+        android:fontFamily="@font/os_bold"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/whitebg"
+        android:textSize="@dimen/fortyeightsp"
+        android:textAlignment="textEnd"
+        android:textColorHint="@color/gray_one"
+        android:hint="@string/editTextCurrency_hint"
+        android:inputType="numberDecimal"
+        android:digits="0123456789."
+        android:maxLength="14"
+        />
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout1"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/seventytwodp"
+        app:layout_constraintTop_toBottomOf="@+id/editTextReferenceAmount"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintWidth_percent=".85"
+        android:orientation="vertical"
+        android:background="@color/black_deep"
+        android:padding="@dimen/fourdp">
+
+        <TextView
+            android:id="@+id/labelSpinnerCurrency"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/twelvedp"
+            android:fontFamily="@font/os_bold"
+            android:labelFor="@+id/spinnerReferenceCurrency"
+            android:text="@string/spinnerCurrency_label"
+            android:textColor="@color/zenith_gray"
+            android:textSize="@dimen/twelvesp" />
+
+        <Spinner
+            android:id="@+id/spinnerReferenceCurrency"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/sixtyfourdp"
+            android:layout_below="@+id/labelSpinnerCurrency"
+            android:backgroundTint="@color/red"
+            tools:ignore="DuplicateSpeakableTextCheck" />
+
+    </RelativeLayout>
+
+    <ProgressBar
+        android:id="@+id/converterProgressBar"
+        android:layout_height="wrap_content"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        app:layout_constraintTop_toBottomOf="@+id/relativeLayout1"
+        android:layout_marginTop="@dimen/fourdp"
+        android:indeterminateOnly="true"/>
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/converterSwipeRefresh"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@+id/converterProgressBar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constrainedHeight="false">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/conversionsRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/black"/>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
