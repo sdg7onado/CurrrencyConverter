@@ -1,3 +1,11 @@
+/*
+ * *
+ *  * Created by Okechukwu Agufuobi on 13/12/2021, 2:43 PM
+ *  * Copyright (c) 2021 . All rights reserved.
+ *  * Last modified 13/12/2021, 2:01 PM
+ *
+ */
+
 package com.paypay.converter.models
 
 import android.content.Context
@@ -27,8 +35,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.json.JSONObject
 import java.io.Serializable
-import java.text.DecimalFormat
-import java.text.DecimalFormatSymbols
+import java.math.BigDecimal
 import java.util.*
 import kotlin.collections.HashMap
 
@@ -46,7 +53,10 @@ class Currency : Serializable, Comparable<Currency?> {
     var name: String
 
     @Ignore
-    var rateValue: Float = 1F
+    var rateValue: Double = 0.0
+
+    @Ignore
+    var rateConvertedValue: String = "0.00"
 
     //constructor() {}
 
@@ -55,10 +65,16 @@ class Currency : Serializable, Comparable<Currency?> {
         this.name = name
     }
 
-    constructor( symbol: String, name: String, rateValue: Float ) {
+    constructor( symbol: String, name: String, rateValue: Double ) {
         this.symbol     = symbol
         this.name       = name
         this.rateValue  = rateValue
+    }
+
+    constructor( symbol: String, name: String, rateConvertedValue: String ) {
+        this.symbol     = symbol
+        this.name       = name
+        this.rateConvertedValue  = rateConvertedValue
     }
 
     override fun compareTo(other: Currency?): Int {
@@ -71,6 +87,29 @@ class Currency : Serializable, Comparable<Currency?> {
                 ", symbol='" + symbol + '\'' +
                 '}'
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as Currency
+
+        if (symbol != other.symbol) return false
+        if (name != other.name) return false
+        if (rateValue != other.rateValue) return false
+        if (rateConvertedValue != other.rateConvertedValue) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = symbol.hashCode()
+        result = 31 * result + name.hashCode()
+        result = 31 * result + rateValue.hashCode()
+        result = 31 * result + rateConvertedValue.hashCode()
+        return result
+    }
+
 
     companion object : ViewModel() {
 
@@ -162,8 +201,9 @@ class CurrencyListResponse (
 }
 
 data class Error (
-    @get:JsonProperty(required=true)@field:JsonProperty(required=true)
-    val code: Long,
+    @get:JsonProperty(required=true)
+    @field:JsonProperty(required=true)
+    val code: Int,
 
     @get:JsonProperty(required=true)@field:JsonProperty(required=true)
     val info: String

@@ -1,3 +1,11 @@
+/*
+ * *
+ *  * Created by Okechukwu Agufuobi on 13/12/2021, 2:43 PM
+ *  * Copyright (c) 2021 . All rights reserved.
+ *  * Last modified 13/12/2021, 2:41 PM
+ *
+ */
+
 package com.paypay.converter
 
 import android.content.Context
@@ -15,6 +23,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.work.ListenableWorker
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.paypay.converter.adapters.ConversionListAdapter
@@ -26,20 +35,21 @@ import com.paypay.converter.models.Currency
 import com.paypay.converter.workers.ConverterWorker.Companion.loadConversionList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.lang.Double.parseDouble
+import java.lang.Float.parseFloat
+import java.math.BigDecimal
 import java.text.DecimalFormat
 import java.text.NumberFormat
 import java.util.*
 import java.util.Locale
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import java.lang.Float.parseFloat
+import kotlin.collections.ArrayList
 
 
 class ConverterActivity : ControlActivity(),
-    ConversionListAdapter.ConversionListAdapterClassAdapterListener,
-    CurrencySpinnerAdapter.CurrencySpinnerAdapterListener
+    ConversionListAdapter.ConversionListAdapterClassAdapterListener
     {
 
-    private val TAG: String = ControlActivity::class.java.simpleName
+    private val TAGNAME: String = ControlActivity::class.java.simpleName
 
     //  Controls
     private lateinit var spinnerReferenceCurrency: Spinner
@@ -81,7 +91,7 @@ class ConverterActivity : ControlActivity(),
             //for logging on firebase
             val bundle = Bundle()
             bundle.putString( FirebaseAnalytics.Param.SCREEN_NAME, ConverterActivity::class.java.simpleName )
-            bundle.putString(FirebaseAnalytics.Param.SCREEN_CLASS, TAG)
+            bundle.putString(FirebaseAnalytics.Param.SCREEN_CLASS, TAGNAME)
 
             mFirebaseAnalytics = FirebaseAnalytics.getInstance(this)
             mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, bundle)
@@ -110,10 +120,10 @@ class ConverterActivity : ControlActivity(),
 
             //setup the swipe refresh layout
             val converterSwipeRefresh: SwipeRefreshLayout = findViewById(R.id.converterSwipeRefresh)
-            converterSwipeRefresh.setOnRefreshListener({
+            converterSwipeRefresh.setOnRefreshListener {
                 computeConversionRates()
-                converterSwipeRefresh.setRefreshing(false)
-            })
+                converterSwipeRefresh.isRefreshing = false
+            }
 
         } catch (e: Exception) {
             Toast.makeText(this@ConverterActivity, e.message, Toast.LENGTH_LONG).show()
@@ -139,12 +149,17 @@ class ConverterActivity : ControlActivity(),
                         loadCurrenciesFromAPI( applicationContext )
                     }
                 } else {
+
+                    //  Hide the empty state view
+                    var emptyStateView = findViewById<RelativeLayout>(R.id.emptyStateView)
+                    emptyStateView.visibility = View.GONE
+
                     //  Update the cached copy of the currencies in the adapter.
                     //  call to loadCurrencySpinnerAdapter
                     mCurrencies             = currencies
                     mCurrencySpinnerAdapter.notify(mCurrencies)
 
-                    //Get the conversions from the db/api
+                    //  Get the conversions from the db/api
                     getConversionRateListings()
                 }
             }
@@ -154,6 +169,10 @@ class ConverterActivity : ControlActivity(),
         }
     }
 
+    /**
+     * TODO
+     *
+     */
     private fun getConversionRateListings() {
 
         try {
@@ -162,7 +181,7 @@ class ConverterActivity : ControlActivity(),
             computeConversionRates()
 
             //load the default list if any
-            mConversionListAdapter.notify( list = ArrayList(mCurrencies) )
+            //mConversionListAdapter.notify( list = ArrayList(mCurrencies) )
 
             //  We will be loading the currency using an observer but ( we should do this once since it will be relatively stable)
             //  Where it is empty we will load from the API
@@ -194,9 +213,10 @@ class ConverterActivity : ControlActivity(),
     private fun computeConversionRates() {
 
         try {
+
             //  Computes the exchange rate for each currency in @mCurrencies
             //  Get the value entered by the user If none return 0 to the variable
-            val referenceAmount = if ( editTextReferenceAmount.text.isNotEmpty() ) { parseFloat(editTextReferenceAmount.text.toString().replace(",","")) } else { 0F }
+            val referenceAmount = if ( editTextReferenceAmount.text.isNotEmpty() ) { BigDecimal(editTextReferenceAmount.text.toString().replace(",","")) } else { BigDecimal("0") }
 
             //  Get the selectedCurrency or use the default currency (first on the list)
             mSelectedCurrency = mSelectedCurrency ?:run {mCurrencies.first()}
@@ -205,8 +225,9 @@ class ConverterActivity : ControlActivity(),
             //  Force recheck of the rates for the selected currency
             //  The computation will be done when the observe method is called from this activity due to any new changes
             //  We call @ConversionRate.computeConversionRates() which return the list with the rates updated
-            val updatedConversion = ConversionRate.computeConversionRates( mConversionRates , mSelectedCurrency!!, referenceAmount )
+            val updatedConversion = ConversionRate.computeConversionRates( mConversionRates , mSelectedCurrency!!.symbol, referenceAmount )
             mConversionListAdapter.notify( updatedConversion )
+
 
         } catch (e: Exception) {
             Toast.makeText(this@ConverterActivity, e.message, Toast.LENGTH_LONG).show()
@@ -222,6 +243,27 @@ class ConverterActivity : ControlActivity(),
             // specify an adapter (see also next example)
             mCurrencySpinnerAdapter = CurrencySpinnerAdapter(applicationContext, mCurrencies)
             spinnerReferenceCurrency.adapter = mCurrencySpinnerAdapter
+
+            //
+            spinnerReferenceCurrency.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    arg0: AdapterView<*>?, arg1: View,
+                    arg2: Int, arg3: Long
+                ) {
+                    mSelectedCurrency = mCurrencies[arg2]
+                    computeConversionRates()
+
+                    //  Reload the exchange list for the selected currency
+                    viewModelScope.launch(Dispatchers.Default) {
+                        loadConversionList(
+                            currencies = arrayListOf(mSelectedCurrency!!),
+                            context = applicationContext
+                        )
+                    }
+                }
+
+                override fun onNothingSelected(arg0: AdapterView<*>?) {}
+            })
 
         } catch (e: Exception) {
             Toast.makeText(this@ConverterActivity, e.message, Toast.LENGTH_LONG).show()
@@ -260,10 +302,6 @@ class ConverterActivity : ControlActivity(),
             mConversionListAdapter = ConversionListAdapter(applicationContext, ArrayList(mCurrencies), this)
             conversionsRecyclerView.adapter = mConversionListAdapter
 
-            //mConversionListAdapter.notifyDataSetChanged()
-
-            //  Refreshing recycler view
-            mConversionListAdapter.notify( ArrayList(mCurrencies) )
 
         } catch (e: Exception) {
             Toast.makeText(this@ConverterActivity, e.message, Toast.LENGTH_LONG).show()
@@ -271,15 +309,7 @@ class ConverterActivity : ControlActivity(),
         }
     }
 
-    override fun onConversionRateSelected(currency: Currency?) {
-        //TODO("Not yet implemented")
-    }
-
-    override fun onCurrencySelected( selectedCurrency: Currency) {
-
-        mSelectedCurrency = selectedCurrency
-        computeConversionRates()
-    }
+    override fun onConversionRateSelected(currency: Currency?) {}
 
     companion object : ViewModel() {
 

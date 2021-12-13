@@ -1,3 +1,11 @@
+/*
+ * *
+ *  * Created by Okechukwu Agufuobi on 13/12/2021, 2:43 PM
+ *  * Copyright (c) 2021 . All rights reserved.
+ *  * Last modified 13/12/2021, 12:25 PM
+ *
+ */
+
 package com.paypay.converter.models
 
 import android.content.Context
@@ -22,23 +30,49 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.json.JSONObject
 import java.io.Serializable
+import java.math.BigDecimal
+import java.text.DecimalFormat
 import java.util.*
 import kotlin.collections.HashMap
 
-
+/**
+ * @ConversionRate The conversion rate class
+ *
+ * @property symbol
+ * @property rateDescription
+ * @property rateValue
+ */
 @Entity(tableName = "tb_conversionrates")
-class ConversionRate(
+class ConversionRate : Serializable, Comparable<ConversionRate?> {
+
     @PrimaryKey
     @NonNull
-    @ColumnInfo(name = "symbol") var symbol: String,
-    @NonNull
-    @ColumnInfo(name = "rateDescription") var rateDescription: String,
-    @NonNull
-    @ColumnInfo(name = "rateValue") var rateValue: Float
-) : Serializable, Comparable<ConversionRate?> {
+    @ColumnInfo(name = "symbol")
+    lateinit var symbol: String
 
-    //constructor() {}
+    @NonNull
+    @ColumnInfo(name = "rateDescription")
+    lateinit var rateDescription: String
 
+    @NonNull
+    @ColumnInfo(name = "rateValue")
+    var rateValue: Double = 0.0
+
+    constructor() {}
+
+    constructor(symbol: String, rateDescription: String, rateValue: Double) {
+        this.symbol = symbol
+        this.rateDescription = rateDescription
+        this.rateValue = rateValue
+    }
+
+
+    /**
+     * TODO
+     *
+     * @param other
+     * @return
+     */
     override fun compareTo(other: ConversionRate?): Int {
         return symbol.compareTo(other!!.symbol, ignoreCase = true)
     }
@@ -86,7 +120,8 @@ class ConversionRate(
                                 converterInterface.onConversionRatesLoaded( conversionRateListResponse )
                             }
                         } else {
-                            converterInterface.onConverterFalied(String.format(Locale.getDefault(), "No conversion data pulled from the API / %s",conversionRateListResponse.error.info ) )
+                            converterInterface.onConverterFalied(conversionRateListResponse,String.format(Locale.getDefault(), "No conversion data pulled from the API / %s",conversionRateListResponse.error.info ) )
+                            //converterInterface.onConverterFalied(String.format(Locale.getDefault(), "No conversion data pulled from the API / %s",conversionRateListResponse.error.info ) )
                         }
 
                     } catch (e: Exception) {
@@ -96,7 +131,7 @@ class ConversionRate(
                 },
                 Response.ErrorListener { error ->
                     error.printStackTrace()
-                    error.message?.let { converterInterface.onConverterFalied( message = it) }
+                    error.message?.let { converterInterface.onConverterFalied( null , message = it) }
                 }) {
 
                 //This is for Headers If You Needed
@@ -115,7 +150,7 @@ class ConversionRate(
             ApplicationExtender.getInstance(context)?.addToRequestQueue(request)
         }
 
-        //Get the conversiob rate between two currencies
+        //Get the conversion rate between two currencies
         fun getConversionRate(
             context: Context?,
             fromCurrency:String,
@@ -153,7 +188,7 @@ class ConversionRate(
                                 converterInterface.onGetConversionRate( conversionRateListResponse )
                             }
                         } else {
-                            converterInterface.onConverterFalied(String.format(Locale.getDefault(), "No data pulled from the API / %s",conversionRateListResponse.error.info ) )
+                            converterInterface.onConverterFalied(conversionRateListResponse,String.format(Locale.getDefault(), "No data pulled from the API / %s",conversionRateListResponse.error.info ) )
                         }
 
                     } catch (e: Exception) {
@@ -163,7 +198,7 @@ class ConversionRate(
                 },
                 Response.ErrorListener { error ->
                     error.printStackTrace()
-                    error.message?.let { converterInterface.onConverterFalied( message = it) }
+                    error.message?.let { converterInterface.onConverterFalied( null,message = it) }
                 }) {
 
                 //This is for Headers If You Needed
@@ -182,14 +217,19 @@ class ConversionRate(
             ApplicationExtender.getInstance(context)?.addToRequestQueue(request)
         }
 
-        val computeConversionRates = fun ( conversionRates : List<ConversionRate> , selectedCurrency : Currency , amount : Float ) : ArrayList<Currency> {
+        fun computeConversionRates( conversionRates : List<ConversionRate> , selectedCurrencySymbol : String , amount : BigDecimal = BigDecimal.ZERO ) : ArrayList<Currency> {
+
+            //  In the filter, we select all matches where the first 3 characters == the selectedCurrency
+            //  In the map, we create a new list comprising of all the matches from the filter along with their @symbol, @rateDescription
+            //  and calculated exchange rate for the provided amount
 
             return conversionRates
                 .filter {
-                    it -> it.symbol.take(3).equals(selectedCurrency.symbol)
+                    //
+                    it.symbol.take(3) == selectedCurrencySymbol
                 }
                 .map {
-                    it -> Currency ( symbol = it.symbol , name = it.rateDescription , rateValue = it.rateValue * amount )
+                    Currency ( symbol = it.symbol.takeLast(3) , name = it.rateDescription , rateConvertedValue = BigDecimal(it.rateValue).multiply(amount).toCurrencyValueInLocale() )
                 } as ArrayList<Currency>
 
         }
@@ -221,15 +261,22 @@ open class ConversionRateListResponse (
 
     @get:JsonProperty(required=true)
     @field:JsonProperty(required=true)
-    val quotes: Map<String, Float>,
+    val quotes: Map<String, Double>,
 
     @get:JsonProperty(required=true)
     @field:JsonProperty(required=true)
     val error: Error
 ) {
-    fun toJson() = mapper.writeValueAsString(this)
 
-    companion object {
-        fun fromJson(json: String) = mapper.readValue<ConversionRateListResponse>(json)
-    }
+    companion object {}
+}
+
+fun Double.toCurrencyValueInLocale(): String {
+    val format = DecimalFormat("#,###,###.#######")
+    return format.format(this)
+}
+
+fun BigDecimal.toCurrencyValueInLocale(): String {
+    val format = DecimalFormat("#,###,###.#######")
+    return format.format(this)
 }

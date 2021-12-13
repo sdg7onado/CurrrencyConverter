@@ -1,5 +1,9 @@
 <!--
-  ~ Copyright (c) 2021. Zenith Bank Plc.
+  ~ /**
+  ~  * Created by Okechukwu Agufuobi on 13/12/2021, 2:43 PM
+  ~  * Copyright (c) 2021 . All rights reserved.
+  ~  * Last modified 13/12/2021, 2:41 PM
+  ~  */
   -->
 
 <resources>
@@ -35,6 +39,8 @@
     <string name="editTextCurrency_hint">0.00</string>
     <string name="editTextCurrency_text">0.00</string>
     <string name="spinnerCurrency_label">CURRENCY</string>
+
+    <string name="emptyState">Loading data… please wait</string>
 
 </resources>
 

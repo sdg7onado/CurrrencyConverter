@@ -1,3 +1,11 @@
+/*
+ * *
+ *  * Created by Okechukwu Agufuobi on 13/12/2021, 2:43 PM
+ *  * Copyright (c) 2021 . All rights reserved.
+ *  * Last modified 13/12/2021, 11:27 AM
+ *
+ */
+
 package com.paypay.converter.adapters
 
 import android.content.Context
@@ -51,7 +59,8 @@ class CurrencySpinnerAdapter(private val context: Context, currencies: List<Curr
         return view!!
     }
 
-    internal class ViewHolder {
+    inner class ViewHolder {
+
         lateinit var spinner_currency_label: TextView
     }
 
@@ -61,12 +70,6 @@ class CurrencySpinnerAdapter(private val context: Context, currencies: List<Curr
         fun onCurrencySelected(selectedCurrency: Currency)
     }
 
-    /**
-     * Instantiates a new Lga spinner adapter.
-     *
-     * @param applicationContext the application context
-     * @param lgas               the lgas
-     */
     init {
         this.currencies = currencies
         inflater = LayoutInflater.from(context)

@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ /**
+  ~  * Created by Okechukwu Agufuobi on 13/12/2021, 2:43 PM
+  ~  * Copyright (c) 2021 . All rights reserved.
+  ~  * Last modified 13/12/2021, 11:27 AM
+  ~  */
+  -->
+
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -52,7 +60,7 @@
             android:paddingLeft="@dimen/sixteendp"
             android:paddingRight="@dimen/sixteendp"
             android:textColor="@color/red"
-            android:textSize="@dimen/sixteensp" />
+            android:textSize="@dimen/sixteensp"/>
 
     </RelativeLayout>
 

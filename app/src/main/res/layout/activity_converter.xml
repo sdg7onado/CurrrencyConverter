@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ /**
+  ~  * Created by Okechukwu Agufuobi on 13/12/2021, 2:43 PM
+  ~  * Copyright (c) 2021 . All rights reserved.
+  ~  * Last modified 13/12/2021, 2:41 PM
+  ~  */
+  -->
+
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -47,11 +55,12 @@
             android:id="@+id/labelSpinnerCurrency"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingStart="@dimen/twelvedp"
             android:fontFamily="@font/os_bold"
             android:labelFor="@+id/spinnerReferenceCurrency"
+            android:paddingStart="@dimen/twelvedp"
+            android:paddingEnd="@dimen/twelvedp"
             android:text="@string/spinnerCurrency_label"
-            android:textColor="@color/zenith_gray"
+            android:textColor="#757575"
             android:textSize="@dimen/twelvesp" />
 
         <Spinner
@@ -60,7 +69,7 @@
             android:layout_height="@dimen/sixtyfourdp"
             android:layout_below="@+id/labelSpinnerCurrency"
             android:backgroundTint="@color/red"
-            tools:ignore="DuplicateSpeakableTextCheck" />
+            tools:ignore="DuplicateSpeakableTextCheck,TouchTargetSizeCheck" />
 
     </RelativeLayout>
 
@@ -88,5 +97,35 @@
             android:background="@color/black"/>
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <RelativeLayout
+        android:id="@+id/emptyStateView"
+        android:layout_width="match_parent"
+        android:layout_height="500dp"
+        app:layout_constraintTop_toBottomOf="@+id/converterProgressBar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constrainedHeight="false">
+
+        <ImageView
+            android:id="@+id/imgEmptyState"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/onetwoeightdp"
+            android:layout_marginTop="@dimen/onetwoeightdp"
+            android:contentDescription="@string/emptyState"
+            android:src="@drawable/ic_paypaylogo" />
+
+        <TextView
+            android:id="@+id/empty_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/imgEmptyState"
+            android:layout_marginTop="@dimen/sixteendp"
+            android:fontFamily="@font/os_regular"
+            android:gravity="center"
+            android:text="@string/emptyState"
+            android:textColor="@color/gray_one"
+            android:textSize="@dimen/sixteensp" />
+
+    </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

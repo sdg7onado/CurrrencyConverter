@@ -1,3 +1,11 @@
+/*
+ * *
+ *  * Created by Okechukwu Agufuobi on 13/12/2021, 2:43 PM
+ *  * Copyright (c) 2021 . All rights reserved.
+ *  * Last modified 13/12/2021, 2:37 PM
+ *
+ */
+
 //apply plugin: 'kotlin-kapt'
 
 plugins {
@@ -94,6 +102,10 @@ android {
         includeInBundle true
     }
 
+    useLibrary("android.test.runner")
+    useLibrary("android.test.base")
+    useLibrary("android.test.mock")
+
     compileSdkVersion 31
     buildToolsVersion '31.0.0'
     ndkVersion '23.1.7779620'
@@ -134,11 +146,12 @@ dependencies {
     //  Room components
     //  implementation "androidx.room:room-runtime:$rootProject.roomVersion"
     implementation "androidx.room:room-ktx:$rootProject.roomVersion"
+    implementation 'androidx.test:core-ktx:1.4.0'
+    implementation 'androidx.test.ext:junit-ktx:1.1.3'
     //  annotationProcessor "androidx.room:room-compiler:$rootProject.roomVersion"
     kapt "androidx.room:room-compiler:$rootProject.roomVersion"
 
     implementation "androidx.room:room-rxjava2:$rootProject.roomVersion"
-    androidTestImplementation "androidx.room:room-testing:$rootProject.roomVersion"
 
     //
     implementation "androidx.fragment:fragment-ktx:$rootProject.fragmentKtxVersion"
@@ -149,7 +162,6 @@ dependencies {
 
     //RxJava2 support
     implementation "androidx.work:work-rxjava2:$rootProject.workVersion"
-    androidTestImplementation "androidx.work:work-testing:$rootProject.workVersion"
 
     //GSON
     implementation "com.google.code.gson:gson:$rootProject.gsonVersion"
@@ -174,6 +186,32 @@ dependencies {
 
     // Testing
     testImplementation "junit:junit:$rootProject.junitVersion"
+
+    androidTestImplementation "androidx.room:room-testing:$rootProject.roomVersion"
+
+    testImplementation "androidx.work:work-testing:$rootProject.workVersion"
+
+    testImplementation ('androidx.test:core:1.4.0')
+
+    //ndroidTestImplementation "android.arch.core:core-testing:1.1.1"
+
+    // AndroidJUnitRunner and JUnit Rules
+    androidTestImplementation('androidx.test:runner:1.4.0')
+    androidTestImplementation('androidx.test:rules:1.4.0')
+
+    // Assertions
+    androidTestImplementation('androidx.test.ext:junit:1.1.3')
+    testImplementation('androidx.test.ext:truth:1.4.0')
+    testImplementation('com.google.truth:truth:1.0.1')
+
+    // Espresso dependencies
+    //androidTestImplementation('androidx.test.espresso:espresso-core:3.4.0')
+    androidTestImplementation('androidx.test.espresso:espresso-contrib:3.4.0')
+    androidTestImplementation('androidx.test.espresso:espresso-intents:3.4.0')
+    androidTestImplementation('androidx.test.espresso:espresso-accessibility:3.4.0')
+    androidTestImplementation('androidx.test.espresso:espresso-web:3.4.0')
+    androidTestImplementation('androidx.test.espresso.idling:idling-concurrent:3.4.0')
+
     androidTestImplementation "androidx.arch.core:core-testing:$rootProject.coreTestingVersion"
     androidTestImplementation("androidx.test.espresso:espresso-core:$rootProject.espressoVersion", {
         exclude group: 'com.android.support', module: 'support-annotations'

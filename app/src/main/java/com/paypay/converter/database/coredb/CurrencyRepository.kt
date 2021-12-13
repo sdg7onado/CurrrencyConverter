@@ -1,3 +1,11 @@
+/*
+ * *
+ *  * Created by Okechukwu Agufuobi on 13/12/2021, 2:43 PM
+ *  * Copyright (c) 2021 . All rights reserved.
+ *  * Last modified 13/12/2021, 11:27 AM
+ *
+ */
+
 package com.paypay.converter.database.coredb
 
 import androidx.annotation.WorkerThread
@@ -21,9 +29,9 @@ class CurrencyRepository(private val currencyDao: CurrencyDao) {
         currencyDao.insertMultiple(currencies = currencies)
     }
 
-    /*@Suppress("RedundantSuspendModifier")
+    @Suppress("RedundantSuspendModifier")
     @WorkerThread
     suspend fun deleteAll() {
         currencyDao.deleteAll()
-    }*/
+    }
 }

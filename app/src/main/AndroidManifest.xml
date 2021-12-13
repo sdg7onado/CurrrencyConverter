@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ /**
+  ~  * Created by Okechukwu Agufuobi on 13/12/2021, 2:43 PM
+  ~  * Copyright (c) 2021 . All rights reserved.
+  ~  * Last modified 13/12/2021, 11:48 AM
+  ~  */
+  -->
+
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.paypay.converter">
 
@@ -43,6 +51,11 @@
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
+
+        <uses-library android:name="android.test.runner"/>
+        <uses-library android:name="android.test.base"/>
+        <uses-library android:name="android.test.mock"/>
+
     </application>
 
 </manifest>

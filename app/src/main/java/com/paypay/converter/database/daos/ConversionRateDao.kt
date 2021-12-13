@@ -1,3 +1,11 @@
+/*
+ * *
+ *  * Created by Okechukwu Agufuobi on 13/12/2021, 2:43 PM
+ *  * Copyright (c) 2021 . All rights reserved.
+ *  * Last modified 13/12/2021, 11:27 AM
+ *
+ */
+
 package com.paypay.converter.database.daos
 
 import androidx.room.Dao
@@ -19,7 +27,7 @@ interface ConversionRateDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertMultiple(conversionRates: List<ConversionRate>)
 
-    //@Query("DELETE FROM tb_conversionrates")
-    //suspend fun deleteAll()
+    @Query("DELETE FROM tb_conversionrates")
+    suspend fun deleteAll()
 
 }

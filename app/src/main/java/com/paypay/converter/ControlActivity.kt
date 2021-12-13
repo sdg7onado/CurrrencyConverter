@@ -1,3 +1,11 @@
+/*
+ * *
+ *  * Created by Okechukwu Agufuobi on 13/12/2021, 2:43 PM
+ *  * Copyright (c) 2021 . All rights reserved.
+ *  * Last modified 13/12/2021, 11:27 AM
+ *
+ */
+
 package com.paypay.converter
 
 import android.app.Activity
@@ -12,6 +20,8 @@ import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import com.google.android.material.snackbar.Snackbar
+import android.graphics.Color
+
 
 open class ControlActivity : AppCompatActivity() {
 

@@ -1,6 +1,13 @@
+/*
+ * *
+ *  * Created by Okechukwu Agufuobi on 13/12/2021, 2:43 PM
+ *  * Copyright (c) 2021 . All rights reserved.
+ *  * Last modified 13/12/2021, 11:27 AM
+ *
+ */
+
 package com.paypay.converter.adapters
 
-import android.R.attr
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
@@ -15,26 +22,14 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.paypay.converter.R
 import com.paypay.converter.models.Currency
+import com.paypay.converter.models.toCurrencyValueInLocale
 import java.util.*
 import kotlin.collections.ArrayList
-import android.R.attr.data
-
-import android.widget.Toast
-import androidx.recyclerview.widget.DiffUtil.DiffResult
-import com.paypay.converter.interfaces.CurrencyInterface
-import java.text.DecimalFormat
-import java.text.DecimalFormatSymbols
-import java.text.NumberFormat
-import java.util.Locale
-
-
-
 
 
 class ConversionListAdapter( private val context: Context, data: ArrayList<Currency>, listener: ConversionListAdapterClassAdapterListener) : RecyclerView.Adapter<RecyclerView.ViewHolder> (), Filterable{
 
-    private val currentPos      = 0
-    private val inflater        : LayoutInflater
+    private val inflater        : LayoutInflater = LayoutInflater.from(context)
 
     var currencyList            : ArrayList<Currency> = ArrayList()
     var currencyListFiltered    : ArrayList<Currency> = ArrayList()
@@ -50,19 +45,23 @@ class ConversionListAdapter( private val context: Context, data: ArrayList<Curre
     // Bind data
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 
+        //onBindViewHolder(holder = holder, position = position, payloads = emptyList())
+
+        ///*
         // Get current position of item in recyclerview to bind data and assign values from list
         val currencyListHolder                      = holder as CurrencyListHolder
         val currency                                = currencyListFiltered[position]
 
         val currencyName                            = currency.name.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
-        currencyListHolder.cell_currencySymbol.text = currency.symbol
-        currencyListHolder.cell_currencyRateValue.text  = currency.rateValue.getCurrencyValueInLocale()
-        currencyListHolder.cell_currencyName.text   = currencyName
+        currencyListHolder.cellcurrencySymbol.text = currency.symbol
+        currencyListHolder.cellcurrencyRateValue.text  = currency.rateConvertedValue
+        currencyListHolder.cellcurrencyName.text   = currencyName
 
         setAnimation(currencyListHolder.itemView, position)
+        //*/
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int, payloads: List<Any>) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int, payloads: MutableList<Any>) {
 
         if (payloads.isEmpty()) {
             super.onBindViewHolder(holder, position, payloads)
@@ -70,19 +69,17 @@ class ConversionListAdapter( private val context: Context, data: ArrayList<Curre
             val o = payloads[0] as Bundle
             for (key in o.keySet()) {
 
-                if (key == "rateValue") {
-                    //holder.icon.setText(data.get(position).getName().substring(0, 2))
-                    //holder.name.setText(data.get(position).getName())}
+                if (key == "rateConvertedValue") {
 
                     val currencyListHolder                      = holder as CurrencyListHolder
                     val currency                                = currencyListFiltered[position]
 
                     val currencyName                            = currency.name.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
-                    currencyListHolder.cell_currencySymbol.text = currency.symbol
+                    currencyListHolder.cellcurrencySymbol.text = currency.symbol
 
                     //let's do some work on the rateValue
-                    currencyListHolder.cell_currencyRateValue.text  = currency.rateValue.getCurrencyValueInLocale()
-                    currencyListHolder.cell_currencyName.text       = currencyName
+                    currencyListHolder.cellcurrencyRateValue.text  = currency.rateConvertedValue
+                    currencyListHolder.cellcurrencyName.text       = currencyName
                 }
             }
         }
@@ -165,32 +162,28 @@ class ConversionListAdapter( private val context: Context, data: ArrayList<Curre
     inner class CurrencyListHolder internal constructor(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
 
-        var cell_currencySymbol: TextView
-        var cell_currencyName: TextView
-        var cell_currencyRateValue: TextView
+        var cellcurrencySymbol: TextView    = itemView.findViewById(R.id.cell_currencySymbol)
+        var cellcurrencyName: TextView      = itemView.findViewById(R.id.cell_currencyName)
+        var cellcurrencyRateValue: TextView = itemView.findViewById(R.id.cell_currencyRateValue)
 
         // create constructor to get widget reference
         init {
-            cell_currencySymbol     = itemView.findViewById(R.id.cell_currencySymbol)
-            cell_currencyName       = itemView.findViewById(R.id.cell_currencyName)
-            cell_currencyRateValue  = itemView.findViewById(R.id.cell_currencyRateValue)
 
-            itemView.setOnClickListener { // send selected contact in callback
-                //listener.onItemSelected(currencyListFiltered[adapterPosition])
+            itemView.setOnClickListener {
+                // send selected contact in callback
                 listener.onConversionRateSelected(currencyListFiltered[bindingAdapterPosition])
             }
         }
     }
 
     init {
-        inflater = LayoutInflater.from(context)
         currencyList = data
         currencyListFiltered = data
         this.listener = listener
     }
 
 
-    class CurrencyComparator(var newList: ArrayList<Currency>, var oldList: ArrayList<Currency>) :
+    class CurrencyComparator(private var newList: ArrayList<Currency>, private var oldList: ArrayList<Currency>) :
         DiffUtil.Callback() {
 
         override fun getOldListSize(): Int {
@@ -202,39 +195,27 @@ class ConversionListAdapter( private val context: Context, data: ArrayList<Curre
         }
 
         override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            return newList[newItemPosition].symbol == oldList.get(oldItemPosition).symbol
+            return newList[newItemPosition].symbol == oldList[oldItemPosition].symbol
         }
 
         override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            val result = newList[newItemPosition].rateValue.compareTo(oldList[oldItemPosition].rateValue)
+            val result = newList[newItemPosition].rateValue.compareTo(oldList[oldItemPosition].rateValue) +
+                            newList[newItemPosition].name.compareTo(oldList[oldItemPosition].name) +
+                                newList[newItemPosition].rateConvertedValue.compareTo(oldList[oldItemPosition].rateConvertedValue)
             return result == 0
         }
 
         override fun getChangePayload(oldItemPosition: Int, newItemPosition: Int): Any? {
 
-            /*
-            val newCurrency: Currency = newList[newItemPosition]
-            val oldCurrency: Currency = oldList[oldItemPosition]
-
-            val diff = Bundle()
-            if (!newCurrency.rateValue.equals(oldCurrency.rateValue)) {
-                diff.putFloat("rateValue", newCurrency.rateValue)
-            }
-
-            return if (diff.size() == 0) {
-                null
-            } else diff
-            */
-
             val newCurrency: Currency = newList[newItemPosition]
             val oldCurrency: Currency = oldList[oldItemPosition]
 
             if (oldCurrency.symbol == newCurrency.symbol) {
-                return if (oldCurrency.rateValue == newCurrency.rateValue) {
+                return if ( oldCurrency.rateConvertedValue == newCurrency.rateConvertedValue ) {
                     super.getChangePayload(oldItemPosition, newItemPosition)
                 } else {
                     val diff = Bundle()
-                    diff.putFloat("rateValue", newCurrency.rateValue)
+                    diff.putString("rateConvertedValue", newCurrency.rateConvertedValue)
                     diff
                 }
             }
@@ -243,10 +224,4 @@ class ConversionListAdapter( private val context: Context, data: ArrayList<Curre
 
         }
     }
-}
-
-fun Float.getCurrencyValueInLocale(): String {
-    val format = DecimalFormat("#,###,###.#######")
-    val retObject = format.format(this)
-    return retObject
 }
