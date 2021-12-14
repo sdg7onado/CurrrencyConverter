@@ -5,7 +5,6 @@ Android app interfacing with currencyLayer API to get exchange rates for various
 
 The app was developed in Kotlin (Android) and covers al the tasks I set out to deliver on.
 
-
 ### Notes
 
 1. API properties (keys, endpoint, base urls) are defined in the file apikey.properties. The file also contains all necessary attributes for the running of the app
