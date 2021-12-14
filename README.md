@@ -17,7 +17,7 @@ The app was developed in Kotlin (Android) and covers al the tasks I set out to d
 
 5. A private GIT repo is available. Accesss will be granted on request.
 
-### TestListenableWorkerBuilder
+### Tests
 The tests are in the respective test folders. 
 
 I have written a test case for the Conversions.
