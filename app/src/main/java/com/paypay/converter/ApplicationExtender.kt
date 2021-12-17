@@ -23,6 +23,11 @@ import com.paypay.converter.database.coredb.ConversionRateRepository
 import com.paypay.converter.database.coredb.CurrencyRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
+import android.os.StrictMode
+import android.os.StrictMode.ThreadPolicy
+import android.os.StrictMode.VmPolicy
+import androidx.multidex.BuildConfig
+
 
 class ApplicationExtender : MultiDexApplication {
 
@@ -73,6 +78,25 @@ class ApplicationExtender : MultiDexApplication {
     override fun onCreate() {
         super.onCreate()
 
+        if ( BuildConfig.DEBUG ) {
+            StrictMode.setThreadPolicy(
+                ThreadPolicy.Builder()
+                    .detectDiskReads()
+                    .detectDiskWrites()
+                    .detectNetwork() // or .detectAll() for all detectable problems
+                    .penaltyLog()
+                    .build()
+            )
+            StrictMode.setVmPolicy(
+                VmPolicy.Builder()
+                    .detectLeakedSqlLiteObjects()
+                    .detectLeakedClosableObjects()
+                    .penaltyLog()
+                    .penaltyDeath()
+                    .build()
+            )
+        }
+
         // register to be informed of activities starting up
         registerActivityLifecycleCallbacks(object : ActivityLifecycleCallbacks {
             override fun onActivityCreated(
@@ -81,7 +105,7 @@ class ApplicationExtender : MultiDexApplication {
             ) {
 
                 // new activity created; force its orientation to portrait
-                activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+                activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
             }
 
             override fun onActivityStarted(activity: Activity) {}
