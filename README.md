@@ -1,7 +1,7 @@
 # CurrrencyConverter
 Android app interfacing with currencyLayer API to get exchange rates for various currencies.
 
-# Mobile Developer Challenge Submission
+# Exploration of WorkManager, Room DB and ViewModel
 
 The app was developed in Kotlin (Android) and covers al the tasks I set out to deliver on.
 
