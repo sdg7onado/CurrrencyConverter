@@ -1,4 +1,4 @@
-# Currrency Converter
+# Currency Converter
 Android app interfacing with currencyLayer API to get exchange rates for various currencies.
 
 # Exploration of WorkManager, Room DB and ViewModel
