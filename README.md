@@ -15,8 +15,6 @@ The app was developed in Kotlin (Android) and covers al the tasks I set out to d
 
 4. currencyLayer API limits the **endpoint(live)** to one currency (USD)
 
-5. A private GIT repo is available. Accesss will be granted on request.
-
 ### Tests
 The tests are in the respective test folders. 
 
