@@ -245,7 +245,7 @@ class ConverterActivity : ControlActivity(),
             spinnerReferenceCurrency.adapter = mCurrencySpinnerAdapter
 
             //
-            spinnerReferenceCurrency.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
+            spinnerReferenceCurrency.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(
                     arg0: AdapterView<*>?, arg1: View,
                     arg2: Int, arg3: Long
@@ -263,7 +263,7 @@ class ConverterActivity : ControlActivity(),
                 }
 
                 override fun onNothingSelected(arg0: AdapterView<*>?) {}
-            })
+            }
 
         } catch (e: Exception) {
             Toast.makeText(this@ConverterActivity, e.message, Toast.LENGTH_LONG).show()

@@ -47,7 +47,7 @@ class ApplicationExtender : MultiDexApplication {
     /**
      * Instantiates a new App analytics extender.
      */
-    constructor() {}
+    constructor()
 
     /**
      * Instantiates a new App analytics extender.

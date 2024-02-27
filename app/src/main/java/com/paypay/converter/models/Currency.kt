@@ -97,9 +97,7 @@ class Currency : Serializable, Comparable<Currency?> {
         if (symbol != other.symbol) return false
         if (name != other.name) return false
         if (rateValue != other.rateValue) return false
-        if (rateConvertedValue != other.rateConvertedValue) return false
-
-        return true
+        return rateConvertedValue == other.rateConvertedValue
     }
 
     override fun hashCode(): Int {

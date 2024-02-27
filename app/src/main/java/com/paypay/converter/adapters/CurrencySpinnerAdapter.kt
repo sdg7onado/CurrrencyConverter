@@ -54,7 +54,8 @@ class CurrencySpinnerAdapter(private val context: Context, currencies: List<Curr
             viewHolder                          = view.tag as ViewHolder
         }
 
-        viewHolder.spinner_currency_label.setText( context.getString( R.string.spinner_currency_label,currencies[i].symbol,currencies[i].name) )
+        viewHolder.spinner_currency_label.text =
+            context.getString( R.string.spinner_currency_label,currencies[i].symbol,currencies[i].name)
 
         return view!!
     }

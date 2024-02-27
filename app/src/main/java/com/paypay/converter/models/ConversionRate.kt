@@ -58,7 +58,7 @@ class ConversionRate : Serializable, Comparable<ConversionRate?> {
     @ColumnInfo(name = "rateValue")
     var rateValue: Double = 0.0
 
-    constructor() {}
+    constructor()
 
     constructor(symbol: String, rateDescription: String, rateValue: Double) {
         this.symbol = symbol
@@ -268,7 +268,7 @@ open class ConversionRateListResponse (
     val error: Error
 ) {
 
-    companion object {}
+    companion object
 }
 
 fun Double.toCurrencyValueInLocale(): String {

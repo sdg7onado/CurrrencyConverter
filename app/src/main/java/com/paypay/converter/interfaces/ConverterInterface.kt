@@ -17,9 +17,7 @@ interface CurrencyInterface {
     suspend fun onCurrencyListLoaded(currencyListResponse: CurrencyListResponse)
     fun onConverterFalied(message: String)
 
-    companion object {
-
-    }
+    companion object
 
 }
 

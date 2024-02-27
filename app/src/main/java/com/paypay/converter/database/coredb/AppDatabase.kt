@@ -31,7 +31,7 @@ import java.util.concurrent.TimeUnit
     exportSchema = false
 )
 
-public abstract class AppDatabase : RoomDatabase() {
+abstract class AppDatabase : RoomDatabase() {
 
     abstract fun currencyDao(): CurrencyDao
     abstract fun conversionRateDao(): ConversionRateDao
@@ -61,7 +61,7 @@ public abstract class AppDatabase : RoomDatabase() {
         private fun buildDatabase(context: Context): AppDatabase {
             return Room.databaseBuilder(context, AppDatabase::class.java, "paypay_convert_database")
                 .addCallback(
-                    object : RoomDatabase.Callback() {
+                    object : Callback() {
                         override fun onCreate(db: SupportSQLiteDatabase) {
 
                             super.onCreate(db)
